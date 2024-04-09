@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .post {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .post h2 {
+            margin-top: 0;
+        }
+        .post p {
+            margin-bottom: 10px;
+        }
+        .comment {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .deleteButton {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Blog Post Project</h1>
+    </header>
+    <div class="container">
+        <div id="postForm">
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title"><br>
+            <label for="author">Author:</label><br>
+            <input type="text" id="author" name="author"><br>
+            <label for="content">Content:</label><br>
+            <textarea id="content" name="content" rows="4" cols="50"></textarea><br>
+            <button onclick="createPost()">Create Post</button>
+        </div>
+        <div id="postsContainer"></div>
+    </div>
+   
+
+    <script>
+        function createPost() {
+            var title = document.getElementById("title").value;
+            var author = document.getElementById("author").value;
+            var content = document.getElementById("content").value;
+
+            var post = document.createElement("div");
+            post.classList.add("post");
+
+            var titleElement = document.createElement("h2");
+            titleElement.textContent = title;
+
+            var authorElement = document.createElement("p");
+            authorElement.innerHTML = "Posted by <span>" + author + "</span>";
+
+            var contentElement = document.createElement("p");
+            contentElement.textContent = content;
+
+            var commentForm = document.createElement("div");
+            var nameLabel = document.createElement("label");
+            nameLabel.textContent = "Name:";
+            var nameInput = document.createElement("input");
+            nameInput.setAttribute("type", "text");
+            nameInput.classList.add("commentName");
+            var commentLabel = document.createElement("label");
+            commentLabel.textContent = "Comment:";
+            var commentInput = document.createElement("textarea");
+            commentInput.classList.add("commentText");
+            var addButton = document.createElement("button");
+            addButton.textContent = "Add Comment";
+            addButton.onclick = addComment;
+
+            commentForm.appendChild(nameLabel);
+            commentForm.appendChild(nameInput);
+            commentForm.appendChild(document.createElement("br"));
+            commentForm.appendChild(commentLabel);
+            commentForm.appendChild(commentInput);
+            commentForm.appendChild(document.createElement("br"));
+            commentForm.appendChild(addButton);
+
+            post.appendChild(titleElement);
+            post.appendChild(authorElement);
+            post.appendChild(contentElement);
+            post.appendChild(commentForm);
+
+            document.getElementById("postsContainer").appendChild(post);
+
+            // Clear form fields after creating the post
+            document.getElementById("title").value = "";
+            document.getElementById("author").value = "";
+            document.getElementById("content").value = "";
+        }
+
+        function addComment() {
+            var post = this.parentElement.parentElement;
+            var name = post.querySelector(".commentName").value;
+            var commentText = post.querySelector(".commentText").value;
+
+            var comment = document.createElement("div");
+            comment.classList.add("comment");
+
+            var nameLabel = document.createElement("strong");
+            nameLabel.textContent = name + ": ";
+
+            var commentTextElement = document.createElement("span");
+            commentTextElement.textContent = commentText;
+
+            var deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.classList.add("deleteButton");
+            deleteButton.onclick = function() {
+                comment.remove();
+            };
+
+            comment.appendChild(nameLabel);
+            comment.appendChild(commentTextElement);
+            comment.appendChild(deleteButton);
+
+            post.appendChild(comment);
+
+            // Clear comment fields after adding the comment
+            post.querySelector(".commentName").value = "";
+            post.querySelector(".commentText").value = "";
+        }
+    </script>
+</body>
+</html>
